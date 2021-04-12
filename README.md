@@ -5,3 +5,4 @@ tools used:
 * cmake
 * check
 * gdb
+* ldd <executable> lists the linked libraries
