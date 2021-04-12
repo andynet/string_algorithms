@@ -10,3 +10,7 @@ target_link_libraries(naive_SACA PRIVATE suffix_array)
 
 add_executable(test_SACA test/test_suffix_array.c)
 target_link_libraries(test_SACA suffix_array check m rt pthread subunit)
+
+add_executable(test_bmh test/test_bmh.c)
+target_link_libraries(test_bmh check m rt pthread subunit)
+
