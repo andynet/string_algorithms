@@ -16,3 +16,9 @@ target_link_libraries(test_bmh check m rt pthread subunit)
 
 add_executable(bmh src/bmh.c)
 
+add_executable(suffix_tree_test test/suffix_tree_test.c)
+target_link_libraries(suffix_tree_test criterion)
+
+add_executable(run test/run.c)
+
+
