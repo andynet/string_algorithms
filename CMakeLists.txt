@@ -19,6 +19,10 @@ add_executable(bmh src/bmh.c)
 add_executable(suffix_tree_test test/suffix_tree_test.c)
 target_link_libraries(suffix_tree_test criterion)
 
-add_executable(run test/run.c)
+add_library(ctoi src/ctoi.h src/ctoi.c)
+add_executable(test_ctoi test/ctoi.c)
+target_link_libraries(test_ctoi criterion ctoi)
 
+add_executable(run test/run.c)
+target_link_libraries(run ctoi)
 
