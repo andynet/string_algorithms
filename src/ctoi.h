@@ -9,4 +9,7 @@ void        ctoi_destroy(ctoi_t *ctoi);
 u_int8_t    ctoi_get_alphabet_size(ctoi_t *ctoi);
 u_int8_t    ctoi_map(ctoi_t *ctoi, char c);
 
+u_int8_t   *ctoi_encode(ctoi_t *ctoi, char const *str);
+char       *ctoi_decode(ctoi_t *ctoi, u_int8_t const *encoded_str);
+
 #endif //CTOI_H
