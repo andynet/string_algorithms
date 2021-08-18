@@ -1,6 +1,6 @@
 #ifndef CTOI_H
 #define CTOI_H
-#include <stdlib.h>
+#include <stdlib.h> /* defines u_int8_t */
 
 typedef struct ctoi ctoi_t;
 

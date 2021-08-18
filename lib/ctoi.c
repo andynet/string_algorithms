@@ -1,13 +1,14 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
+#include "ctoi.h"
 
 #define ASCII_SIZE 128
 
-typedef struct ctoi {
+struct ctoi {
     u_int8_t alphabet_size;
     char mapping[ASCII_SIZE];
-} ctoi_t;
+};
 
 ctoi_t *ctoi_create(char const *text) {
     ctoi_t *ctoi = malloc(sizeof *ctoi);

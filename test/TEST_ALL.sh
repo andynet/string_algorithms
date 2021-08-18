@@ -10,4 +10,6 @@ echo "test_ctoi"
 ../cmake-build-debug/test_ctoi
 echo "test_jaccard_dist"
 ../cmake-build-debug/test_jaccard_dist
+echo "test_ndarray"
+../cmake-build-debug/test_ndarray
 
