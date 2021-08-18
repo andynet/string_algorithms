@@ -22,7 +22,7 @@ add_executable(test_ctoi test/ctoi.c)
 target_link_libraries(test_ctoi criterion ctoi)
 
 add_executable(test_jaccard_dist test/test_jaccard.c)
-target_link_libraries(test_jaccard_dist criterion)
+target_link_libraries(test_jaccard_dist criterion ctoi)
 
 # build executables
 add_executable(run test/run.c)

@@ -3,10 +3,10 @@
 #include <string.h>
 #include <math.h>
 #include <stdbool.h>
+#include "../lib/ctoi.h"
 
 #define ALPHABET_SIZE 4
 #define ASCII_SIZE 128
-#define EMPTY (-1)
 #define K 2
 
 typedef struct fasta_record {
@@ -84,22 +84,6 @@ fa_record *read_record(char **lineptr, size_t *n, FILE *fp) {
     free(id);
     free(seq);
     return rec;
-}
-
-char *convert_toidx(char *str) {
-    uint n = strlen(str);
-    char *new = malloc(sizeof *new * (n+1)); 
-    char *ctoidx = malloc(sizeof *ctoidx * ASCII_SIZE);
-    for (uint i=0; i<ASCII_SIZE; i++) { ctoidx[i] = EMPTY; }
-    ctoidx['A'] = 1;
-    ctoidx['C'] = 2;
-    ctoidx['G'] = 3;
-    ctoidx['T'] = 4;
-    for (uint i=0; i < n; i++) {
-        new[i] = ctoidx[(uint)str[i]];
-    }
-    free(ctoidx);
-    return new;
 }
 
 uint kmertopos(char *kmer) {
@@ -201,9 +185,10 @@ bool *get_bitvector(char *seq, uint lowest_val, uint size) {
     char kmer[K+1];
     memset(kmer, 0, K+1);
 
-    char *num = convert_toidx(seq);
+    ctoi_t *ctoi = ctoi_create("ACGT");
+    u_int8_t *num = ctoi_encode(ctoi, seq);
     for (uint i=K; i <= strlen(seq); i++) {
-        strncpy(kmer, &num[i-K], K);
+        memcpy(kmer, &num[i-K], K);
         // printf("kmer: %x %x %x\n", kmer[0], kmer[1], kmer[2]);
         if (!is_dna(kmer)) { continue; }
         uint value = kmertopos(kmer) - lowest_val;   // TODO: change this to rolling hash

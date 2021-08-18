@@ -15,7 +15,7 @@ ctoi_t *ctoi_create(char const *text) {
     uint i;
     char n = 0;
     for (i = 0; i < strlen(text); i++)
-        ctoi->mapping[text[i]] = 1;
+        ctoi->mapping[(uint)text[i]] = 1;
     for (i = 0; i < ASCII_SIZE; i++) {
         if (ctoi->mapping[i] == 0)
             ctoi->mapping[i] = -1;
@@ -41,7 +41,7 @@ u_int8_t ctoi_map(ctoi_t *ctoi, char c) {
         printf("Error: char c = %d", c);
         exit(EXIT_FAILURE);
     }
-    return ctoi->mapping[c];
+    return ctoi->mapping[(uint)c];
 }
 
 u_int8_t *ctoi_encode(ctoi_t *ctoi, char const *str) {
@@ -58,8 +58,12 @@ u_int8_t *ctoi_encode(ctoi_t *ctoi, char const *str) {
 
 char *create_inverse_mapping(char const *mapping) {
     char *inverse = malloc(ASCII_SIZE);
+    memset(inverse, 0, ASCII_SIZE);
     for (u_int8_t i = 0; i < ASCII_SIZE; i++) {
-        inverse[mapping[i]] = (char)i;
+        if (mapping[i] < 0)
+            continue;
+        else
+            inverse[(uint)mapping[i]] = (char)i;
     }
     return inverse;
 }
@@ -78,6 +82,7 @@ char *ctoi_decode(ctoi_t *ctoi, u_int8_t const *encoded_str) {
     }
 
     decoded_str[n] = '\0';
+    free(imap);
     return decoded_str;
 }
 
