@@ -30,7 +30,7 @@ int main(void){
     suite = test_suite();
     runner = srunner_create(suite);
 
-    srunner_run_all(runner, CK_VERBOSE);
+    srunner_run_all(runner, CK_NORMAL);
     failed = srunner_ntests_failed(runner);
     srunner_free(runner);
 

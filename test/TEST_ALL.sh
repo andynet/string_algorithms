@@ -11,5 +11,5 @@ echo "test_ctoi"
 echo "test_jaccard_dist"
 ../cmake-build-debug/test_jaccard_dist
 echo "test_ndarray"
-../cmake-build-debug/test_ndarray
+../cmake-build-debug/test_ndarray --verbose --filter external/*
 

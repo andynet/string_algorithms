@@ -29,11 +29,10 @@ ndarray_t *ndarray_create(uint ndims, ...) {
     return array;
 }
 
-void ndarray_destroy(ndarray_t **ndarray) {
-    free((**ndarray).content);
-    free((**ndarray).dim_sizes);
-    free(( *ndarray));
-    (*ndarray) = NULL;
+void ndarray_destroy(ndarray_t *ndarray) {
+    free(ndarray->content);
+    free(ndarray->dim_sizes);
+    free(ndarray);
 }
 
 uint *ndarray_at(ndarray_t *array, ...) {
