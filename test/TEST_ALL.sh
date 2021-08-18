@@ -1,15 +1,17 @@
 #!/bin/bash
 
-echo "test_SACA"
-../cmake-build-debug/test_SACA
-echo "test_bmh"
-../cmake-build-debug/test_bmh
-echo "test_suffix_tree"
-../cmake-build-debug/test_suffix_tree
-echo "test_ctoi"
-../cmake-build-debug/test_ctoi
-echo "test_jaccard_dist"
-../cmake-build-debug/test_jaccard_dist
-echo "test_ndarray"
-../cmake-build-debug/test_ndarray --verbose --filter external/*
+set -euo pipefail
+
+run() {
+  bin=${1}
+  shift
+  echo -ne "\nTesting ${bin}...\n"
+  ../cmake-build-debug/${bin} ${@} # --verbose --filter external/*
+}
+
+run "test_ctoi" ${@}
+run "test_ndarray" ${@}
+run "test_bmh" ${@}
+run "test_jaccard_dist" ${@}
+run "test_suffix_tree" ${@}
 

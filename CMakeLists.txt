@@ -10,23 +10,20 @@ add_library(ndarray lib/ndarray.h lib/ndarray.c)
 add_library(suffix_array src/suffix_array.h src/suffix_array.c)
 
 # build tests
-add_executable(test_ctoi test/ctoi.c)
+add_executable(test_ctoi test/test_ctoi.c)
 target_link_libraries(test_ctoi criterion ctoi)
 
 add_executable(test_ndarray test/test_ndarray.c)
 target_link_libraries(test_ndarray criterion ndarray)
 
-add_executable(test_SACA test/test_suffix_array.c)
-target_link_libraries(test_SACA suffix_array check m rt pthread subunit)    # TODO: change to criterion
-
 add_executable(test_bmh test/test_bmh.c)
-target_link_libraries(test_bmh check m rt pthread subunit)                  # TODO: change to criterion
-
-add_executable(test_suffix_tree test/suffix_tree_test.c)
-target_link_libraries(test_suffix_tree criterion)
+target_link_libraries(test_bmh criterion)
 
 add_executable(test_jaccard_dist test/test_jaccard.c)
 target_link_libraries(test_jaccard_dist criterion ctoi)
+
+add_executable(test_suffix_tree test/test_suffix_tree.c)
+target_link_libraries(test_suffix_tree criterion)
 
 # build executables
 add_executable(run test/run.c)
