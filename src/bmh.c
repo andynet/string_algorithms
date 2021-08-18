@@ -5,7 +5,7 @@ int *precompute_lambda(char *pattern){
     size_t m = strlen(pattern);
     int *lambda = (int *)calloc(256, (sizeof *lambda));
     for (size_t i = 0; i < m; i++){
-        lambda[pattern[i]] = i;
+        lambda[(uint)pattern[i]] = i;
     }
     return lambda;
 }
@@ -24,13 +24,8 @@ int bmh(char *pattern, char *text) {
         if (i < 0){
             return j + i + 1;
         }
-        j = j + m - lambda[text[j+m]];
+        j = j + m - lambda[(uint)text[j+m]];
     }
     return -1;
 }
-
-//int main(void) {
-//    int m = bmh("AB", "ABBBB");
-//    return 0;
-//}
 

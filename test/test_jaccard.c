@@ -1,5 +1,5 @@
 #include <criterion/criterion.h>
-#include "../src/functions.c"
+#include "../src/jaccard_functions.c"
 
 Test(tmp, test1) {}
 
@@ -10,7 +10,7 @@ Test(tmp, test_get_bitvector) {
 
     bool bitvector1[16] = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     bool *bitvector2 = get_bitvector(seq, lowest_val, size);
-    for (int i=0; i < size; i++) {
+    for (uint i=0; i < size; i++) {
         cr_assert(bitvector1[i] == bitvector2[i]);
     }
 }
@@ -22,7 +22,7 @@ Test(suite, test_get_bitvector2) {
 
     bool bitvector1[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
     bool *bitvector2 = get_bitvector(seq, lowest_val, size);
-    for (int i=0; i < size; i++) {
+    for (uint i=0; i < size; i++) {
         cr_assert(bitvector1[i] == bitvector2[i]);
     }
 }

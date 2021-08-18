@@ -21,6 +21,9 @@ target_link_libraries(test_suffix_tree criterion)
 add_executable(test_ctoi test/ctoi.c)
 target_link_libraries(test_ctoi criterion ctoi)
 
+add_executable(test_jaccard_dist test/test_jaccard.c)
+target_link_libraries(test_jaccard_dist criterion)
+
 # build executables
 add_executable(run test/run.c)
 target_link_libraries(run ctoi)
@@ -28,4 +31,4 @@ target_link_libraries(run ctoi)
 add_executable(naive_SACA src/naive_SACA.c)
 target_link_libraries(naive_SACA suffix_array)
 
-# add_executable(bmh src/bmh.c)
+add_executable(jaccard_dist src/jaccard_dist.c)

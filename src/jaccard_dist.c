@@ -1,5 +1,5 @@
 #include <unistd.h>
-#include "functions.c"
+#include "../src/jaccard_functions.c"
 
 enum Arguments {FASTA=0, OUT};
 char **arg_parse(int argc, char **argv);

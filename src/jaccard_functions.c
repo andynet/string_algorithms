@@ -56,6 +56,10 @@ char *get_id(char *line) {
 fa_record *read_record(char **lineptr, size_t *n, FILE *fp) {
     char *id = get_id(*lineptr);
     ssize_t read = getline(lineptr, n, fp);
+    if (read == -1) {
+        printf("Error: cannot read line.");
+        exit(EXIT_FAILURE);
+    }
     uint seq_size = 1;
     char *seq = malloc(sizeof *seq * seq_size);
     memset(seq, 0, seq_size);
@@ -92,7 +96,7 @@ char *convert_toidx(char *str) {
     ctoidx['G'] = 3;
     ctoidx['T'] = 4;
     for (uint i=0; i < n; i++) {
-        new[i] = ctoidx[str[i]];
+        new[i] = ctoidx[(uint)str[i]];
     }
     free(ctoidx);
     return new;
