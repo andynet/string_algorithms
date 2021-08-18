@@ -7,5 +7,5 @@ Test(core, constructed_suffix_tree) {
     char *text = "abaab$";
     suffix_tree_t *st = suffix_tree_create(text);
 
-    suffix_tree_destroy(&st);
+    // suffix_tree_destroy(&st);
 }

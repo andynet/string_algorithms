@@ -1,6 +1,6 @@
 #include <criterion/criterion.h>
 #include <stdio.h>
-#include "../src/ctoi.h"
+#include "../lib/ctoi.h"
 
 Test(core, empty_test) {}
 

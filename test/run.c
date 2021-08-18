@@ -1,18 +1,19 @@
-#include "../src/suffix_tree.c"
-#include "../src/ctoi.h"
+// #include "../src/suffix_tree.c"
+#include "../lib/ctoi.h"
 
 int main(void) {
     ctoi_t *ctoi = ctoi_create("ACGT");
 
     u_int8_t *encoded = ctoi_encode(ctoi, "ACGTNTGCA");
     char *decoded = ctoi_decode(ctoi, encoded);
-    char *expected = "ACGT TGCA";
+    // char *expected = "ACGT TGCA";
 
     free(encoded);
     free(decoded);
     ctoi_destroy(ctoi);
     ctoi = NULL;
 }
+
 //int main(void) {
 //    node_t *root = node_create(0, 0, 3);
 //        node_t *node3 = node_create(5, 1, 3);  // $
