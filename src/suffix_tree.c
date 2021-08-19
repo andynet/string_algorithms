@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../lib/ctoi.h"
+#include "suffix_tree.h"
 
 #define ALPHABET_SIZE 4
 
-typedef struct node node_t;
 struct node {
     uint start;
     uint length;
@@ -12,41 +13,30 @@ struct node {
     node_t **children;
 };
 
-typedef struct suffix_tree suffix_tree_t;
 struct suffix_tree {
     char *text;
+    ctoi_t *ctoi;
     node_t *root;
 };
-
-// externals
-suffix_tree_t  *suffix_tree_create(char const *text);
-void            suffix_tree_destroy(suffix_tree_t **st);
-void            suffix_tree_print(suffix_tree_t *st);
-
-// internals
-node_t *node_create(uint start, uint length, uint alphabet_size);
-void    node_destroy(node_t **node);
-void    node_print(node_t *node);
 
 node_t *node_create(uint start, uint length, uint alphabet_size) {
     node_t *node = malloc(sizeof *node);
     node->start = start;
     node->length = length;
     node->n_children = alphabet_size;
-    node->children = malloc(sizeof *(node->children) * alphabet_size);
+    node->children = malloc(sizeof node->children * alphabet_size);
     for (uint i = 0; i < alphabet_size; i++) node->children[i] = NULL;
     return node;
 }
 
-void node_destroy(node_t **node) {
-    free((*node)->children);
-    free((*node));
-    (*node) = NULL;
+void node_destroy(node_t *node) {
+    free(node->children);
+    free(node);
 }
 
 void node_print(node_t *node) {
-    printf("%p %2d %2d\t", node, node->start, node->length);
-    for (uint i = 0; i < node->n_children; i++) printf("%p\t", node->children[i]);
+    printf("%p %2d %2d\t", (void *)node, node->start, node->length);
+    for (uint i = 0; i < node->n_children; i++) printf("%p\t", (void *)node->children[i]);
     printf("\n");
 }
 
@@ -58,49 +48,50 @@ void subtree_print(node_t *node, uint depth) {
     }
 }
 
-void suffix_tree_insert(suffix_tree_t *st, char const *text);
-
 suffix_tree_t *suffix_tree_create(char const *text) {
     suffix_tree_t *st = malloc(sizeof *st);
-    st->text = malloc(strlen(text) + 1);
-    strcpy(st->text, text);
+    st->text = strdup(text);
+    st->ctoi = ctoi_create(text);
+    st->root = node_create(0, 0, ctoi_get_alphabet_size(st->ctoi));
 
-    node_t *node = node_create(0, 0, 4);
-    st->root = node;
-
-    char *suffix = malloc(strlen(text));
     for (uint i = 0; i < strlen(text); i++) {
-        strcpy(suffix, text+i);
-        // printf("%s\n", suffix);
-        suffix_tree_insert(st, suffix);
+        suffix_tree_insert(st, text + i);
     }
     return st;
 }
 
-uint ctoidx(char c) {
-    switch (c) {
-        case 'A': return 0;
-        case 'C': return 1;
-        case 'G': return 2;
-        case 'T': return 3;
-        default: return 4;
+void node_insert_child(node_t *node, char const *text, uint pos, ctoi_t *ctoi) {
+    node_t *child;
+    child = node->children[ctoi_map(ctoi, text[pos]) - 1];
+    if (child == NULL) {
+        // node_insert_child
+        uint start = node->start + node->length;
+        uint length = strlen(text + pos);
+        node_t *new_node = node_create(start, length, ALPHABET_SIZE);
+        child = new_node;
+    } else {
+        if (strncmp(&text[child->start], &text[pos], child->length) == 0) {
+            node = child;
+            node_insert_child(node, text, pos + child->length, ctoi);
+        } else {
+            // find ho many characters match
+            uint n_matching = 2; // TODO: slowscan(&text[child->start], &text[pos], child->length)
+            // split child
+            uint s1 = child->start;
+            uint l1 = n_matching;
+            uint s2 = s1 + l1;
+            uint l2 = child->length - l1;
+            node_destroy(child);
+            child = node_create(s1, l1, ALPHABET_SIZE);
+            child->children[ctoi_map(ctoi, text[s1 + l1]) - 1]
+                = node_create(s2, l2, ALPHABET_SIZE);
+            // add another node
+            child->children[ctoi_map(ctoi, text[pos + l1]) - 1]
+                = node_create(pos + l1, strlen(text) - pos - l1, ALPHABET_SIZE);
+        }
     }
 }
 
 void suffix_tree_insert(suffix_tree_t *st, char const *text) {
-    if (st->root->children == NULL) {
-        st->root->children = malloc((sizeof *(st->root->children)) * ALPHABET_SIZE);
-        for (uint i = 0; i < ALPHABET_SIZE; i++) st->root->children = NULL;
-    }
-    node_t *current;
-    uint pos = 0;
-    current = st->root;
-    if (&current->children[ctoidx(text[pos])] == NULL) {
-
-    }
-
-    for (uint i = 0; i < strlen(text); i++) {
-
-    }
+    node_insert_child(st->root, text, 0, st->ctoi);
 }
-
